@@ -8,3 +8,8 @@
 1.配置好MySQL数据库，设置用户名为admin，密码为123456，开启服务，执行sql文件以便导入数据；  
 2.IDEA导入项目：通过pom.xml导入项目，配置好Tomcat  
 3.使用浏览器访问http://localhost:8080 即可进入系统
+### 注意事项
+BookService.java中的addBook方法和editBook方法使用了绝对路径，使用时请注意修改为相对路径。
+**联系方式**
+qq:474285675
+微信:liyao_5675
