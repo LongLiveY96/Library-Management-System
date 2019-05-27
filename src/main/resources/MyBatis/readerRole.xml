@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.dao.ReaderRoleDao">
+    <select id="getAllRole" resultType="com.library.bean.ReaderRole">
+        SELECT
+               rr.role_id AS roleId,
+               role_name AS roleName,
+               borrow_num AS borrowNum,
+               limit_day AS limitDay,
+               count( reader_id ) AS count
+        FROM
+             reader_role rr
+                 LEFT JOIN reader_card rc ON rr.role_id = rc.role_id
+        GROUP BY
+                 rr.role_id
+    </select>
+    <select id="getRoleById" parameterType="String" resultType="com.library.bean.ReaderRole">
+        select role_id as roleId, role_name as roleName, borrow_num as borrowNum,
+               limit_day as limitDay
+        from reader_role
+        where role_id = #{roleId}
+    </select>
+    <delete id="deleteRole" parameterType="String">
+        delete from reader_role where role_id = #{roleId}
+    </delete>
+    <update id="editRole" parameterType="com.library.bean.ReaderRole">
+        update reader_role t set role_name = #{roleName},borrow_num = #{borrowNum},limit_day = #{limitDay}
+        where t.role_id = #{roleId}
+    </update>
+    <insert id="addRole" parameterType="com.library.bean.ReaderRole">
+        insert into reader_role values (null,#{roleName},#{borrowNum},#{limitDay})
+    </insert>
+</mapper>

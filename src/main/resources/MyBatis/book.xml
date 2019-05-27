@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.dao.BookDao">
+    <resultMap id="BaseResultMap" type="com.library.bean.Book">
+        <id column="book_id" property="bookId" jdbcType="DECIMAL"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="author" property="author" jdbcType="VARCHAR"/>
+        <result column="publish" property="publish" jdbcType="VARCHAR"/>
+        <result column="ISBN" property="isbn" jdbcType="VARCHAR"/>
+        <result column="introduction" property="introduction" jdbcType="VARCHAR"/>
+        <result column="language" property="language" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="pub_date" property="pubDate" jdbcType="DATE"/>
+        <result column="class_id" property="classId" jdbcType="DECIMAL"/>
+        <result column="number" property="number" jdbcType="DECIMAL"/>
+        <result column="class_name" property="className" jdbcType="VARCHAR"/>
+        <result column="img_url" property="imgUrl" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="addBook" parameterType="com.library.bean.Book">
+        insert into book_info values
+        (null, #{name}, #{author}, #{publish}, #{isbn},
+        #{introduction}, #{language}, #{price}, #{pubDate},
+        #{classId}, #{number}, #{imgUrl})
+    </insert>
+    <update id="editBook" parameterType="com.library.bean.Book">
+        update book_info set name=#{name}, author=#{author},
+        publish=#{publish}, ISBN=#{isbn}, introduction=#{introduction},
+        language=#{language}, price=#{price}, pub_date=#{pubDate},
+        class_id=#{classId}, number=#{number}, img_url=#{imgUrl} where book_id=#{bookId}
+    </update>
+    <select id="getAllBooks" resultMap="BaseResultMap">
+        select b.*,c.class_name from book_info b
+        left join class_info c
+        on c.class_id = b.class_id
+    </select>
+    <select id="queryBook" resultMap="BaseResultMap" parameterType="String">
+        select b.*,c.class_name from book_info b
+        left join class_info c
+        on c.class_id = b.class_id
+        where name like #{search}
+        or author like #{search}
+    </select>
+    <select id="matchBook" resultType="int" parameterType="String">
+        select count(*) from book_info where name like #{search}
+        or author like #{search} or introduction like #{search}
+    </select>
+    <select id="getBook" resultMap="BaseResultMap" parameterType="long">
+        select b.*,c.class_name from book_info b
+        left join class_info c
+        on c.class_id = b.class_id
+        where b.book_id = #{book_id}
+    </select>
+    <delete id="deleteBook" parameterType="long">
+        delete from book_info where book_id = #{book_id}
+    </delete>
+    <select id="checkBook" resultType="int" parameterType="long">
+        select count(*) from lend_list
+        where book_id = #{book_id} and back_date is null
+    </select>
+</mapper>

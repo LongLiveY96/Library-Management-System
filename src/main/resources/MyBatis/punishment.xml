@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.dao.PunishmentDao">
+    <resultMap id="BaseResultMap" type="com.library.bean.Punishment">
+        <id column="punishment_id" property="punishmentId" jdbcType="DECIMAL"/>
+        <result column="ser_num" property="serNum" jdbcType="DECIMAL"/>
+        <result column="book_id" property="bookId" jdbcType="DECIMAL"/>
+        <result column="bookName" property="bookName" jdbcType="VARCHAR"/>
+        <result column="reader_id" property="readerId" jdbcType="DECIMAL"/>
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+        <result column="lend_date" property="lendDate" jdbcType="DATE"/>
+        <result column="back_date" property="backDate" jdbcType="DATE"/>
+        <result column="over_day" property="overDay" jdbcType="DECIMAL"/>
+    </resultMap>
+    <select id="badList" resultMap="BaseResultMap">
+        select t.*,bi.name as bookName, ri.name as userName from punishment t
+        left join book_info bi
+                on bi.book_id = t.book_id
+        left join reader_info ri
+                on ri.reader_id = t.reader_id
+    </select>
+    <select id="myBadList" parameterType="Long" resultMap="BaseResultMap">
+        select t.*,bi.name as bookName, ri.name as userName from punishment t
+        left join book_info bi
+                on bi.book_id = t.book_id
+        left join reader_info ri
+                on ri.reader_id = t.reader_id
+        where t.reader_id = #{readerId}
+    </select>
+</mapper>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.library.dao.ClassInfoDao">
+    <select id="getAllClass" resultType="com.library.bean.ClassInfo">
+        select ci.class_id as classId,ci.class_name className,count(book_id) count from class_info ci
+        left join book_info bi
+        on ci.class_id = bi.class_id
+        GROUP BY ci.class_id
+    </select>
+    <select id="getClassById" parameterType="String" resultType="com.library.bean.ClassInfo">
+        select class_id classId,class_name className from class_info ci
+        where ci.class_id = #{classId}
+    </select>
+    <delete id="deleteClass" parameterType="String">
+        delete from class_info where class_id = #{classId}
+    </delete>
+    <update id="editClass" parameterType="com.library.bean.ClassInfo">
+        update class_info t set class_name = #{className} where t.class_id = #{classId}
+    </update>
+    <insert id="addClass" parameterType="com.library.bean.ClassInfo">
+        insert into class_info values (null,#{className})
+    </insert>
+</mapper>
