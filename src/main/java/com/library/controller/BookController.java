@@ -51,17 +51,6 @@ public class BookController {
         return modelAndView;
     }
 
-//    @RequestMapping("/book_add_do.html")
-//    public String addBookDo(@RequestParam(value = "pubstr") String pubstr,
-//                            Book book, RedirectAttributes redirectAttributes) {
-//        book.setPubDate(getDate(pubstr));
-//        if (bookService.addBook(book)) {
-//            redirectAttributes.addFlashAttribute("succ", "图书添加成功！");
-//        } else {
-//            redirectAttributes.addFlashAttribute("succ", "图书添加失败！");
-//        }
-//        return "redirect:/admin_books.html";
-//    }
     @RequestMapping("/querybook.html")
     public ModelAndView queryBookDo(String searchWord) {
         if (bookService.matchBook(searchWord)) {
